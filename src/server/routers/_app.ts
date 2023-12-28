@@ -1,5 +1,8 @@
 import { z } from 'zod';
 import { procedure, router } from '../trpc';
+import prisma from '@/config/prisma';
+import { IConversation } from '@/interfaces';
+// postgresql://janasarii:oeP3UjMhmvy8@ep-white-wildflower-71963779.us-east-2.aws.neon.tech/db?sslmode=require
 
 export const appRouter = router({
     getHello: procedure.query(() => {
@@ -10,27 +13,18 @@ export const appRouter = router({
         z.object({
             text: z.string(),
         }),
-    ).query((opts) => {
-        console.log('addData');
-        return {
-            message: `Added ${opts.input.text}`,
-        };
+    ).mutation(async ({ input: { text } }) => {
+        console.log('addData', text);
+        await prisma.conversation.create({
+            data: {
+                name: text,
+            }
+        });
+        return { message: "Data added successfully" };
     }),
     getTodos: procedure.query(() => {
-        return {
-            todos: [
-                {
-                    id: 1,
-                    text: "Learn TRPC",
-                    done: false,
-                },
-                {
-                    id: 2,
-                    text: "Learn React",
-                    done: false,
-                },
-            ],
-        };
+        const conversations = prisma.conversation.findMany();
+        return conversations as Promise<IConversation[]>;
     }),
     getNumbers: procedure.query(() => {
         return {

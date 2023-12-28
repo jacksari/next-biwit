@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TypeMessage {
+  TEXT
+  AUDIO
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String? // Nombre opcional del usuario
+  email         String         @unique // Email del usuario
+  password      String // Contraseña del usuario
+  // chats    Chat[]    @relation("ChatUser") // Relación con los chats
+  conversations Conversation[] @relation("UserConversation") // Relación con las conversaciones
+  messages      Message[]      @relation("UserMessage") // Relación con los mensajes
+}
+
+model Conversation {
+  id       Int       @id @default(autoincrement())
+  name     String? // Nombre opcional de la conversación (puede ser un chat grupal)
+  messages Message[] @relation("MessageConversation") // Relación con los mensajes
+  user     User      @relation("UserConversation", fields: [userId], references: [id]) // Relación con el usuario
+  userId   Int // Referencia al ID del usuario
+}
+
+// Modelo para los mensajes
+model Message {
+  id             Int          @id @default(autoincrement())
+  text           String       @default("") // Texto del mensaje
+  type           TypeMessage  @default(TEXT) // Tipo de mensaje
+  file           String? // Archivo del mensaje
+  timestamp      DateTime     @default(now()) // Marca de tiempo del mensaje
+  conversation   Conversation @relation("MessageConversation", fields: [conversationId], references: [id]) // Relación con la conversación
+  conversationId Int // Referencia al ID de la conversación
+  user           User         @relation("UserMessage", fields: [userId], references: [id]) // Relación con el usuario
+  userId         Int // Referencia al ID del usuario
+}
