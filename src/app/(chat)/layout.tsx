@@ -14,12 +14,12 @@ export default async function ShopLayout({
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen flex ">
       {/* <TopMenu /> */}
       <Sidebar />
       
 
-      <div className="px-0 sm:px-10">{children}</div>
+      <div className="px-0 sm:px-10 flex-1 bg-slate-100">{children}</div>
 
       {/* <Footer /> */}
     </main>

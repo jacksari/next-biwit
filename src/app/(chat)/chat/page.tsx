@@ -6,7 +6,7 @@ import { IoCartOutline } from "react-icons/io5";
 
 export default function ChatPage() {
 
-    
+
 
   return (
     <div className="flex justify-center items-center h-[800px]">
@@ -15,7 +15,6 @@ export default function ChatPage() {
       <div className="flex flex-col items-center">
         <h1 className="text-xl font-semibold">Chat</h1>
 
-        <button onClick={() => logout()}>Logout</button>
 
         <Link href="/" className="text-blue-500 mt-2 text-4xl">
           Regresar

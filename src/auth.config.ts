@@ -10,6 +10,22 @@ export const authConfig: NextAuthConfig = {
         signIn: '/auth/login',
         newUser: '/auth/register',
     },
+    callbacks: {
+        jwt: async ({ token, user }) => {
+            if (user) {
+                // token.id = user.id;
+                token.data = user;
+            }
+            return token;
+        },
+        async session({ session, token, user }) {
+            // const { password: _, ...rest } = user as any;
+
+            session.user = token.data as any;
+
+            return session;
+        },
+    },
     providers: [
         Credentials({
             async authorize(credentials) {
