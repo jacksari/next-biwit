@@ -13,17 +13,11 @@ export default async function ShopLayout({
     redirect("/auth/login");
   }
 
-  console.log(session);
-
   return (
     <main className="min-h-screen">
       {/* <TopMenu /> */}
       <Sidebar />
-      {
-        <pre>
-            {JSON.stringify(session, null, 2)}
-        </pre>
-      }
+      
 
       <div className="px-0 sm:px-10">{children}</div>
 
