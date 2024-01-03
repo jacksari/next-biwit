@@ -15,6 +15,7 @@ export default async function Sidebar() {
         <h1 className="text-3xl font-bold text-gray-800">Sidebar</h1>
         <p>User: {session?.user.name}</p>
         <BtnLogout />
+        
       </div>
     </aside>
   );
